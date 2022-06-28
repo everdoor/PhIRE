@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from hypertune import varyrate
 from analysis import *
 

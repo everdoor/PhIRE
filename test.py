@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from analysis import hyper_rmse
 from hypertune import *
 

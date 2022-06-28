@@ -1,3 +1,4 @@
+#!/usr/bin/python
 ''' @author: Andrew Glaws, Karen Stengel, Ryan King
 '''
 import tensorflow as tf

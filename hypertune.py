@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from PhIREGANs import *
 
 def varyeps(epochlower, epochupper, data_type, 

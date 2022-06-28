@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from PhIREGANs import *
 
 tf.enable_eager_execution()

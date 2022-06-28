@@ -181,7 +181,7 @@ def generate_TFRecords(filename, data, mode='test', K=None):
                                       'w_LR': _int64_feature(w_LR),
                                    'data_HR': _bytes_feature(data[j, ...].tostring()),
                                       'h_HR': _int64_feature(h_HR),
-                                      'w_HR': _int64_feature(w_HR),
+                                      'w_HR': _int64_feature(w_HR),+
                                          'c': _int64_feature(c)})
             elif mode == 'test':
                 h_LR, w_LR, c = data[j, ...].shape

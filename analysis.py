@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import numpy as np
 
 def rmse(ground_truth_array, gan_array):

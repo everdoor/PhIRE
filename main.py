@@ -1,3 +1,4 @@
+#!/usr/bin/python
 ''' @author: Karen Stengel
 '''
 from PhIREGANs import *
