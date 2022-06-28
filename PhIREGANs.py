@@ -396,7 +396,7 @@ class PhIREGANs:
             if not os.path.exists(self.data_out_path):
                 os.makedirs(self.data_out_path)
             np.save(self.data_out_path+'/dataSR.npy', data_out)
-
+            
         print('Done.')
 
     def _parse_train_(self, serialized_example, mu_sig=None):

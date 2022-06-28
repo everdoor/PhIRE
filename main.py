@@ -2,6 +2,7 @@
 '''
 from PhIREGANs import *
 
+
 # WIND - LR-MR
 #-------------------------------------------------------------
 
@@ -43,8 +44,7 @@ mu_sig = [[344.3262, 113.7444], [386.9283, 117.9627]]
 '''
 
 if __name__ == '__main__':
-
-    phiregans = PhIREGANs(data_type=data_type, mu_sig=mu_sig)
+    phiregans = PhIREGANs(data_type=data_type, mu_sig=mu_sig, )
     
     model_dir = phiregans.pretrain(r=r,
                                    data_path=data_path,
@@ -59,6 +59,4 @@ if __name__ == '__main__':
     phiregans.test(r=r,
                    data_path=data_path,
                    model_path=model_dir,
-                   batch_size=1)
-
-
+                   batch_size=1, plot_data = True)
