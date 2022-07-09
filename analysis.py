@@ -48,11 +48,10 @@ def hyper_rmse(hyper_ganarray, ground_truth_array):
         produced by the n'th model in positions [i,:,:,j] of the relevant arrays.
     
     '''
-    rmse_array_list = []
-    for k in range(0,np.shape(hyper_ganarray)[0]):
-        rmse_array_list.append(rmse(ground_truth_array, hyper_ganarray[k,:,:,:,:]))
+    rmse_array_list = [rmse(ground_truth_array, hyper_ganarray[k,:,:,:,:]) for k in range(0,np.shape(hyper_ganarray)[0])]
     hyper_rmse_array = np.asarray(rmse_array_list)
     return(hyper_rmse_array)
+
 
 
 
