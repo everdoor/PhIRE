@@ -37,7 +37,7 @@ def manyruns(runs, data_type,
                 batch_size=1, plot_data = True)
         i += 1
 
-    newdir = f'{path_to_PhIRE}/structured_outs/mruns_{runs}_'+strftime('%m%d-%H%M%S')
+    newdir = f'{path_to_PhIRE}/structured_outs/mruns_{runs}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
     os.mkdir(newdir)
 
     new_data_dir = newdir+'/data_out'
@@ -101,7 +101,7 @@ def varyeps(epochlower, epochupper, data_type,
                    model_path=model_dir,
                    batch_size=1, plot_data = True)
     
-    newdir = f'{path_to_PhIRE}/structured_outs/{(epochupper-epochlower) + 1}veps_{epochlower}_'+strftime('%m%d-%H%M%S')
+    newdir = f'{path_to_PhIRE}/structured_outs/{(epochupper-epochlower) + 1}veps_{epochlower}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
     os.mkdir(newdir)
 
     new_data_dir = newdir+'/data_out'
@@ -173,7 +173,7 @@ def varyrate(lower_rate, upper_rate, abs_lower_order_mag,
                    model_path=model_dir,
                    batch_size=1, plot_data = True)
     
-    newdir = f'{path_to_PhIRE}/structured_outs/{str(len(vlist))}vrate_{str(lower_rate)}-{str(step)}_'+strftime('%m%d-%H%M%S')
+    newdir = f'{path_to_PhIRE}/structured_outs/{str(len(vlist))}vrate_{str(lower_rate)}-{str(step)}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
     os.mkdir(newdir)
 
     new_data_dir = newdir+'/data_out'

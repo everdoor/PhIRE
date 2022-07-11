@@ -4,7 +4,8 @@
 import os
 import numpy as np
 import tensorflow as tf
-from time import strftime, time
+from time import time
+from datetime import datetime
 from utils import plot_SR_data
 from sr_network import SR_NETWORK
 
@@ -29,7 +30,7 @@ class PhIREGANs:
         self.LR_data_shape = None
 
         # Set various paths for where to save data
-        self.run_id        = '-'.join([self.data_type, strftime('%Y%m%d-%H%M%S')])
+        self.run_id        = '-'.join([self.data_type, datetime.utcnow().strftime('%m%d-%H%M%S-%f')])
         self.model_name    = '/'.join(['models', self.run_id])
         self.data_out_path = '/'.join(['data_out', self.run_id])
 
@@ -55,7 +56,7 @@ class PhIREGANs:
         self.data_out_path = in_data_path
     
     def reset_run_id(self):
-        self.run_id        = '-'.join([self.data_type, strftime('%Y%m%d-%H%M%S')])
+        self.run_id        = '-'.join([self.data_type, datetime.utcnow().strftime('%m%d-%H%M%S-%f')])
         self.model_name    = '/'.join(['models', self.run_id])
         self.data_out_path = '/'.join(['data_out', self.run_id])
 
