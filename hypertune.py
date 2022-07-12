@@ -17,6 +17,14 @@ def manyruns(runs, data_type,
         ganarray: A numpy array of shape (runs,5,100,100,2)
     
     '''
+    newdir = f'/hpcgpfs01/scratch/everdoore/structured_outs/mruns_{runs}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
+    os.mkdir(newdir)
+
+    new_data_dir = newdir+'/data_out'
+    os.mkdir(new_data_dir)
+
+    new_model_dir = newdir+'/models'
+    os.mkdir(new_model_dir)
     i = 0
     while i < runs:
         phiregans = PhIREGANs(data_type=data_type, mu_sig=mu_sig)
@@ -35,23 +43,15 @@ def manyruns(runs, data_type,
                 data_path=data_path,
                 model_path=model_dir,
                 batch_size=1, plot_data = True)
+        
+        data_out_path = path_to_PhIRE+'/data_out'
+        mv_data = max([os.path.join(data_out_path,d) for d in os.listdir(data_out_path)], key=os.path.getmtime)
+        shutil.move(mv_data, new_data_dir)
+
+        model_save_path = path_to_PhIRE+'/models'
+        mv_model = max([os.path.join(model_save_path,d) for d in os.listdir(model_save_path)], key=os.path.getmtime)
+        shutil.move(mv_model, new_model_dir)
         i += 1
-
-    newdir = f'{path_to_PhIRE}/structured_outs/mruns_{runs}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
-    os.mkdir(newdir)
-
-    new_data_dir = newdir+'/data_out'
-    os.mkdir(new_data_dir)
-
-    new_model_dir = newdir+'/models'
-    os.mkdir(new_model_dir)
-    
-    mvlist = sorted(os.listdir(path_to_PhIRE+'/data_out'))[-1*runs:]
-    for i in range(len(mvlist)):
-        shutil.move(path_to_PhIRE+'/data_out/'+mvlist[i], new_data_dir+'/'+mvlist[i]) 
-
-    for i in range(len(mvlist)):
-        shutil.move(path_to_PhIRE+'/models/'+mvlist[i], new_model_dir+'/'+mvlist[i])
     
     data_list = [sorted(os.listdir(new_data_dir))[i]+'/dataSR.npy' 
         for i in range(len(sorted(os.listdir(new_data_dir))))]
@@ -65,6 +65,7 @@ def manyruns(runs, data_type,
 
 def varyeps(epochlower, epochupper, data_type, 
             mu_sig , r, data_path, model_path):
+    
     '''
         Runs the phiregans model iteratively with varying learning epoch number and returns
         an aggregate array of outputs of shape (k,5,100,100,2) where k = (epochupper - epochlower) +1
@@ -80,8 +81,14 @@ def varyeps(epochlower, epochupper, data_type,
     
     '''
     
-    
-    N = len(os.listdir('/home/emilio/bnl/climproj/PhIRE/data_out'))
+    newdir = f'/hpcgpfs01/scratch/everdoore/structured_outs/mruns_{((epochupper-epochlower) + 1)}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
+    os.mkdir(newdir)
+
+    new_data_dir = newdir+'/data_out'
+    os.mkdir(new_data_dir)
+
+    new_model_dir = newdir+'/models'
+    os.mkdir(new_model_dir)
     
     for i in range(epochlower,epochupper+1):
         phiregans = PhIREGANs(data_type=data_type, mu_sig=mu_sig, N_epochs=i)
@@ -100,22 +107,14 @@ def varyeps(epochlower, epochupper, data_type,
                    data_path=data_path,
                    model_path=model_dir,
                    batch_size=1, plot_data = True)
-    
-    newdir = f'{path_to_PhIRE}/structured_outs/{(epochupper-epochlower) + 1}veps_{epochlower}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
-    os.mkdir(newdir)
+        
+        data_out_path = path_to_PhIRE+'/data_out'
+        mv_data = max([os.path.join(data_out_path,d) for d in os.listdir(data_out_path)], key=os.path.getmtime)
+        shutil.move(mv_data, new_data_dir)
 
-    new_data_dir = newdir+'/data_out'
-    os.mkdir(new_data_dir)
-
-    new_model_dir = newdir+'/models'
-    os.mkdir(new_model_dir)
-    
-    mvlist = sorted(os.listdir(path_to_PhIRE+'/data_out'))[-1*((epochupper-epochlower) + 1):]
-    for i in range(len(mvlist)):
-        shutil.move(path_to_PhIRE+'/data_out/'+mvlist[i], new_data_dir+'/'+mvlist[i]) 
-
-    for i in range(len(mvlist)):
-        shutil.move(path_to_PhIRE+'/models/'+mvlist[i], new_model_dir+'/'+mvlist[i])
+        model_save_path = path_to_PhIRE+'/models'
+        mv_model = max([os.path.join(model_save_path,d) for d in os.listdir(model_save_path)], key=os.path.getmtime)
+        shutil.move(mv_model, new_model_dir)
     
     data_list = [sorted(os.listdir(new_data_dir))[i]+'/dataSR.npy' 
         for i in range(len(sorted(os.listdir(new_data_dir))))]
@@ -147,13 +146,22 @@ def varyrate(lower_rate, upper_rate, abs_lower_order_mag,
     outputs:
 
     '''
-    
+
     if step == 'none':
         step = 1*(10**(-abs_lower_order_mag))
     vlist = np.arange(lower_rate, upper_rate+step, step)
     
     for i in range(len(vlist)):
         vlist[i] = round(vlist[i], abs_lower_order_mag)
+    
+    newdir = f'/hpcgpfs01/scratch/everdoore/structured_outs/{str(len(vlist))}vrate_{str(lower_rate)}-{str(step)}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
+    os.mkdir(newdir)
+
+    new_data_dir = newdir+'/data_out'
+    os.mkdir(new_data_dir)
+
+    new_model_dir = newdir+'/models'
+    os.mkdir(new_model_dir)
 
     for i in range(len(vlist)):
         phiregans = PhIREGANs(data_type= data_type, mu_sig=mu_sig, learning_rate= vlist[i])
@@ -172,22 +180,14 @@ def varyrate(lower_rate, upper_rate, abs_lower_order_mag,
                    data_path=data_path,
                    model_path=model_dir,
                    batch_size=1, plot_data = True)
-    
-    newdir = f'{path_to_PhIRE}/structured_outs/{str(len(vlist))}vrate_{str(lower_rate)}-{str(step)}_'+datetime.utcnow().strftime('%m%d-%H%M%S-%f')
-    os.mkdir(newdir)
 
-    new_data_dir = newdir+'/data_out'
-    os.mkdir(new_data_dir)
+        data_out_path = path_to_PhIRE+'/data_out'
+        mv_data = max([os.path.join(data_out_path,d) for d in os.listdir(data_out_path)], key=os.path.getmtime)
+        shutil.move(mv_data, new_data_dir)
 
-    new_model_dir = newdir+'/models'
-    os.mkdir(new_model_dir)
-    
-    mvlist = sorted(os.listdir(path_to_PhIRE+'/data_out'))[-1*len(vlist):]
-    for i in range(len(mvlist)):
-        shutil.move(path_to_PhIRE+'/data_out/'+mvlist[i], new_data_dir+'/'+mvlist[i]) 
-
-    for i in range(len(mvlist)):
-        shutil.move(path_to_PhIRE+'/models/'+mvlist[i], new_model_dir+'/'+mvlist[i])
+        model_save_path = path_to_PhIRE+'/models'
+        mv_model = max([os.path.join(model_save_path,d) for d in os.listdir(model_save_path)], key=os.path.getmtime)
+        shutil.move(mv_model, new_model_dir)
     
     data_list = [sorted(os.listdir(new_data_dir))[i]+'/dataSR.npy' 
         for i in range(len(sorted(os.listdir(new_data_dir))))]
