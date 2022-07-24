@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from math import log10
 import numpy as np
 
 def rmse(ground_truth_array, gan_array):
@@ -36,7 +37,7 @@ def rmse(ground_truth_array, gan_array):
     rmse = np.transpose((np.asarray(rmse)))
     return(rmse)
 
-def hyper_rmse(hyper_ganarray, ground_truth_array):
+def hyper_rmse(ground_truth_array,hyper_ganarray):
     '''
     Computes RMSE for the outputs of multiple models that have been aggregated into an array
 
@@ -52,7 +53,29 @@ def hyper_rmse(hyper_ganarray, ground_truth_array):
     hyper_rmse_array = np.asarray(rmse_array_list)
     return(hyper_rmse_array)
 
+def psnr(ground_truth_array,gan_array):
+    
+    gandata=gan_array
+    trudata=ground_truth_array
 
+    n_psnr=[]
+    e_psnr=[]
 
+    for j in range(2):
+        for i in range(5):
+            max_value=np.max(gandata[i,:,:,j])
+            diff = trudata[i,:,:,j] - gandata[i,:,:,j]
+            diffsq = diff*diff
+            mse = np.sum(diffsq)/1000
+            psnr = 20*log10(max_value) -10*log10(mse)
+            if j==0: n_psnr.append(psnr)
+            if j==1: e_psnr.append(psnr)
+    psnr=[n_psnr,e_psnr]
+    psnr = np.transpose(np.asarray(psnr))
+    return(psnr)
 
-
+def hyper_psnr(ground_truth_array,hyper_ganarray):
+ 
+    psnr_array_list = [psnr(ground_truth_array, hyper_ganarray[k,:,:,:,:]) for k in range(0,np.shape(hyper_ganarray)[0])]
+    hyper_psnr_array = np.asarray(psnr_array_list)
+    return(hyper_psnr_array)
